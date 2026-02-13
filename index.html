@@ -218,7 +218,6 @@
             to { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
         }
 
-        /* --- Footer Controls --- */
         .controls-area {
             flex: 0 0 auto;
             background-color: #1e1e1e;
@@ -328,7 +327,6 @@
     </div>
 
     <script>
-        // Configuration
         const numStrings = 6;
         const numFrets = 22; 
         // Index 0 = High E (1st), Index 5 = Low E (6th)
@@ -339,13 +337,11 @@
         };
         const inlays = [3, 5, 7, 9, 12, 15, 17, 19, 21];
 
-        // State
         let currentTarget = { stringIdx: 0, fretIdx: 0, note: '' };
         let correctCount = 0;
         let totalCount = 0;
         let isWaiting = false;
 
-        // Elements
         const fretboardEl = document.getElementById('fretboard');
         const feedbackEl = document.getElementById('feedback-display');
         const nextBtn = document.getElementById('next-btn');
@@ -432,17 +428,14 @@
             return notes[targetIdx];
         }
 
-        // --- 核心逻辑更新 ---
         function generateQuestion() {
             isWaiting = false;
             feedbackEl.textContent = '';
             nextBtn.style.display = 'none';
 
-            // 清除旧点
             const oldDot = document.querySelector('.target-dot');
             if (oldDot) oldDot.remove();
 
-            // 1. 确定弦 (String Logic)
             let targetStringIndex;
             const selectedStringVal = stringSelector.value;
             
@@ -452,32 +445,27 @@
                 targetStringIndex = parseInt(selectedStringVal);
             }
 
-            // 2. 确定品 (Fret Logic)
             let availableFrets = [];
             if (modeSwitch.checked) {
-                // Anchor Mode: 只选品记
                 availableFrets = inlays;
             } else {
-                // All Frets Mode: 0-22
                 availableFrets = Array.from({length: numFrets + 1}, (_, i) => i);
             }
 
             const randFret = availableFrets[Math.floor(Math.random() * availableFrets.length)];
 
-            // 3. 设置目标
+
             currentTarget.stringIdx = targetStringIndex;
             currentTarget.fretIdx = randFret;
             currentTarget.note = getNoteAt(targetStringIndex, randFret);
 
-            // 4. 渲染
             const cell = document.querySelector(`.fret-cell[data-string="${targetStringIndex}"][data-fret="${randFret}"]`);
             if (cell) {
                 const dot = document.createElement('div');
                 dot.className = 'target-dot';
                 cell.appendChild(dot);
                 
-                // 只有当题目不在视野内时才考虑滚动 (在手机上比较重要)
-                // 这里我们做简单处理：保持不动，因为我们做了全局视图
+  
             }
         }
 
